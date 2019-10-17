@@ -1,18 +1,10 @@
-//https://collectionapi.metmuseum.org/public/collection/v1/objects/[objectID]
-// const searchUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/search?departmentId=11&dateBegin=1095&dateEnd=1950&q=sunflowers';
-//gesture
-
-// load a default library that lets us read/write to the file system
-var fs = require('fs')
-// load a default library that lets us make HTTP requests (like calls to an API)
-var request = require('request')
-
 const searchUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=monument';
 const objectBaseUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
 
 fetchMuseumData(searchUrl);
+// fetchdepartData(departmentBaseURL);
 
-let myArray = [];
+let myMetArray = [];
 
 function fetchMuseumData(url) {
   window
@@ -47,27 +39,20 @@ function addObject(objectData){
     var currentID = objectData.objectID;
     var currentTitle = objectData.title;
     var currentCountry = objectData.artistNationality;
-    // var currenttags = objectData.tags;
+    var currentCulture = objectData.culture;
+    var currenttags = objectData.tags;
     var imgUrl = objectData.primaryImage;
-    var index = myArray.length;
+    var index = myMetArray.length;
     
-    myArray[index] = {};
-    myArray[index]["title"] = currentTitle;
+    if(currentTitle.toLowerCase().includes('monument') || currenttags.toLowerCase().includes('monument') ){ 
+    myMetArray[index] = {};
+    myMetArray[index]["title"] = currentTitle;
     // myArray[index]["date"] = currentDate;
-    myArray[index]["country"] = currentCountry;
+    myMetArray[index]["country"] = currentCountry;
+    myMetArray[index]["culture"] = currentCulture;
     // myArray[index]["tags"] = currenttags;
-    myArray[index]["image"] = imgUrl;
+    myMetArray[index]["image"] = imgUrl;
+    }
     
-    console.log(myArray[index]);
+    console.log(myMetArray[index]);
 }
-
-// call the function for each element in the myObjectIds array
-myArray.forEach(objectId => {
-    fetchObjects(objectId);
-});
-
-// the function inside the setTimeout saves myResults to a JSON
-// it will automatically run after 2000 ms
-setTimeout(() => {
-    fs.writeFileSync('/NYTapi/data.json', JSON.stringify(myArray), 'utf8');
-}, 2000);

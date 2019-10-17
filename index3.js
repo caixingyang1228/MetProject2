@@ -1,11 +1,11 @@
-// https://api.nytimes.com/svc/topstories/v2/science.json?api-key=o3xgyxagspMb0ubPF7G0OrW9Zmo7Uk09
-// The possible section value are: arts, automobiles, books, business, fashion, food, health, home, insider, magazine, movies, national, nyregion, obituaries, opinion, politics, realestate, science, sports, sundayreview, technology, theater, tmagazine, travel, upshot, and world.
-
 var baseUrl = "https://api.nytimes.com/svc/topstories/v2/";
 var apiKey = "o3xgyxagspMb0ubPF7G0OrW9Zmo7Uk09";
 var section = "world";
 var url = baseUrl+section+".json?"+"api-key="+apiKey;
 // var records = $("#numberofrecords").val().trim().length > 0;
+
+
+var myArray = [];
 
     console.log(url);
     $.ajax({
@@ -15,13 +15,18 @@ var url = baseUrl+section+".json?"+"api-key="+apiKey;
         // console.log(theObject);
         for(var i = 0; i<1000; i++){
           var theTitles = theObject.results[i].title;
-          var theTags = theObject.results[i].des_facet;
+          var theGeo = theObject.results[i].geo_facet;
+          var index = myArray.length;
           
-          console.log(theTitles);
-          console.log(theTags);
+          // console.log(theTitles);
+          // console.log(theTags);
+          myArray[index] = {};
+          myArray[index]["title"] = theTitles;
+          myArray[index]["country"] = theGeo;
+          
+          console.log(myArray[index]);
         }
     });
-    
     
     
     
